@@ -171,6 +171,10 @@ class SchemaNormalizer implements DenormalizerInterface, NormalizerInterface, De
             $object->setEnum(null);
         }
         if (\array_key_exists('type', $data) && $data['type'] !== null) {
+            if (is_array($data['type']) && in_array('null',$data['type'])) {
+                $data['type'] = array_values(array_diff($data['type'],['null']));
+                $data['type'] = '?'.$data['type'][0];
+            }
             $object->setType($data['type']);
             unset($data['type']);
         }
